@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EfCoreMapping.Domain/EfCoreMapping.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src\Infrastructure\EfCoreMapping.Infrastructure.EfCore\EfCoreMapping.Infrastructure.EfCore.csproj" />
+    <Project Path="src\Infrastructure\EfCoreMapping.Infrastructure.Postgres\EfCoreMapping.Infrastructure.Postgres.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="src\EfCoreMapping.Presentation.Console\EfCoreMapping.Presentation.Console.csproj" />
+  </Folder>
+</Solution>
