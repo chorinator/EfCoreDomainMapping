@@ -3,6 +3,7 @@
     <Project Path="src/EfCoreMapping.Domain/EfCoreMapping.Domain.csproj" />
   </Folder>
   <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/EfCoreMapping.Infrastructure.MsSql/EfCoreMapping.Infrastructure.MsSql.csproj" />
     <Project Path="src\Infrastructure\EfCoreMapping.Infrastructure.EfCore\EfCoreMapping.Infrastructure.EfCore.csproj" />
     <Project Path="src\Infrastructure\EfCoreMapping.Infrastructure.Postgres\EfCoreMapping.Infrastructure.Postgres.csproj" />
   </Folder>

@@ -1,7 +1,7 @@
 using EfCoreMapping.Domain;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EfCoreMapping.Infrastructure.Postgres.Conversions;
+namespace EfCoreMapping.Infrastructure.EfCore.Conversions;
 
 public class TimestampConverter() : ValueConverter<Timestamp, DateTime>(
     ts => ts.Value,

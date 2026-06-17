@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Infrastructure\EfCoreMapping.Infrastructure.MsSql\EfCoreMapping.Infrastructure.MsSql.csproj" />
       <ProjectReference Include="..\..\Infrastructure\EfCoreMapping.Infrastructure.Postgres\EfCoreMapping.Infrastructure.Postgres.csproj" />
     </ItemGroup>
 

@@ -3,9 +3,9 @@ using EfCoreMapping.Infrastructure.EfCore;
 using EfCoreMapping.Infrastructure.EfCore.Conversions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreMapping.Infrastructure.Postgres;
+namespace EfCoreMapping.Infrastructure.MsSql;
 
-public class PostgresAppDbContext(DbContextOptions<PostgresAppDbContext> options) : AppDbContext(options)
+public class MsSqlAppDbContext(DbContextOptions<MsSqlAppDbContext> options) : AppDbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,12 +21,12 @@ public class PostgresAppDbContext(DbContextOptions<PostgresAppDbContext> options
             transferBuilder.Property(transfer => transfer.Id)
                 .HasConversion(new TransferIdConverter())
                 .HasColumnName("PublicId")
-                .HasColumnType("uuid");
+                .HasColumnType("uniqueidentifier");
             transferBuilder.HasIndex(transfer => transfer.Id).IsUnique();
             
             transferBuilder.Property(transfer => transfer.ExecutedAt)
                 .HasConversion(new TimestampConverter())
-                .HasColumnType("timestamptz");
+                .HasColumnType("datetime2");
 
             transferBuilder.ComplexProperty(t => t.Amount, moneyBuilder =>
             {
