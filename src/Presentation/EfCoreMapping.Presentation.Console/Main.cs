@@ -1,6 +1,7 @@
 using EfCoreMapping.Domain;
+using EfCoreMapping.Domain.Specifications;
+using EfCoreMapping.Domain.Specifications.Transfers;
 using EfCoreMapping.Infrastructure.EfCore;
-using EfCoreMapping.Infrastructure.EfCore.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreMapping.Presentation.Console;
@@ -12,20 +13,27 @@ public class App(AppDbContext db)
         if (db.Database.GetPendingMigrations().Any())
             db.Database.Migrate();
 
-        InsertTransfersDemo.InsertTransfers(db);
+        if(!db.Transfers.Any())
+            InsertTransfersDemo.InsertTransfers(db);
 
-        System.Console.WriteLine("--- USD transfers ---");
-        foreach (var t in QueryTransfersDemo.QueryByCurrency(db, Currency.USD))
-            System.Console.WriteLine($"  {t}");
+        var timestamp = Timestamp.UtcNow.Add(TimeSpan.FromHours(3));
+        List<Tuple<string, Specification<Transfer>>> specifications =
+        [
+            new ("USD transfers", new ByCurrency(Currency.USD)),
+            new ("Currency Starting With 'J'", new ByCurrencyStartingWith("J")),
+            new ("Transfers with amount >= 100", new ByMinAmount(100m)),
+            new ($"Transfers executed since {timestamp}", new AfterTimestamp(timestamp))
+        ];
 
-        System.Console.WriteLine("--- JPY transfers ---");
-        foreach (var t in QueryTransfersDemo.QueryByCurrency(db, Currency.JPY))
-            System.Console.WriteLine($"  {t}");
-
-        System.Console.WriteLine("--- Transfers >= 50 ---");
-        foreach (var t in QueryTransfersDemo.QueryByAmount(db, 50m))
-            System.Console.WriteLine($"  {t}");
-
+        foreach (var (title, specification) in specifications)
+        {
+            System.Console.WriteLine($"--- {title} ---");
+            var results = 
+                db.Transfers.WithSpecification(specification).ToList();
+            foreach (var transfer in results)
+                System.Console.WriteLine($"  {transfer}");
+        }
+        
         return Task.CompletedTask;
     }
 }
