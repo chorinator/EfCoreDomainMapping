@@ -1,6 +1,7 @@
 using EfCoreMapping.Domain;
+using EfCoreMapping.Infrastructure.EfCore;
 
-namespace EfCoreMapping.Infrastructure.EfCore.Specifications;
+namespace EfCoreMapping.Presentation.Console;
 
 public static class InsertTransfersDemo
 {
@@ -27,8 +28,8 @@ public static class InsertTransfersDemo
         
         context.SaveChanges();
 
-        Console.WriteLine();
-        Console.WriteLine($"Inserted {usdAmounts.Length} USD and {jpyAmounts.Length} JPY transfers..");
-        Console.WriteLine();
+        System.Console.WriteLine();
+        System.Console.WriteLine($"Inserted {usdAmounts.Length} USD and {jpyAmounts.Length} JPY transfers..");
+        System.Console.WriteLine();
     }
 }
