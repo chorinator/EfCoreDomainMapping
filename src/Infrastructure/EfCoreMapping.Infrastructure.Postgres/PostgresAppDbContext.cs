@@ -21,12 +21,12 @@ public class PostgresAppDbContext(DbContextOptions<PostgresAppDbContext> options
             transferBuilder.Property(transfer => transfer.Id)
                 .HasConversion(new TransferIdConverter())
                 .HasColumnName("PublicId")
-                .HasColumnType("uniqueidentifier");
+                .HasColumnType("uuid");
             transferBuilder.HasIndex(transfer => transfer.Id).IsUnique();
             
             transferBuilder.Property(transfer => transfer.ExecutedAt)
                 .HasConversion(new TimestampConverter())
-                .HasColumnType("datetime2");
+                .HasColumnType("timestamptz");
 
             transferBuilder.ComplexProperty(t => t.Amount, moneyBuilder =>
             {

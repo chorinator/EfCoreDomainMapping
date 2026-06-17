@@ -18,8 +18,8 @@ namespace EfCoreMapping.Infrastructure.Postgres.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PublicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ExecutedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PublicId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExecutedAt = table.Column<DateTime>(type: "timestamptz", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(18,3)", nullable: false),
                     CurrencyCode = table.Column<string>(type: "varchar(3)", nullable: false),
                     CurrencyDecimalPlaces = table.Column<int>(type: "integer", nullable: false)

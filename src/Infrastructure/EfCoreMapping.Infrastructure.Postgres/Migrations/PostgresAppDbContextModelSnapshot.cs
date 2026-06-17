@@ -33,10 +33,10 @@ namespace EfCoreMapping.Infrastructure.Postgres.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Key"));
 
                     b.Property<DateTime>("ExecutedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamptz");
 
                     b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("uuid")
                         .HasColumnName("PublicId");
 
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Amount", "EfCoreMapping.Domain.Transfer.Amount#Money", b1 =>

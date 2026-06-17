@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EfCoreMapping.Infrastructure.Postgres.Migrations
 {
     [DbContext(typeof(PostgresAppDbContext))]
-    [Migration("20260617170052_Init")]
+    [Migration("20260617172447_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -36,10 +36,10 @@ namespace EfCoreMapping.Infrastructure.Postgres.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Key"));
 
                     b.Property<DateTime>("ExecutedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamptz");
 
                     b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("uuid")
                         .HasColumnName("PublicId");
 
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Amount", "EfCoreMapping.Domain.Transfer.Amount#Money", b1 =>
