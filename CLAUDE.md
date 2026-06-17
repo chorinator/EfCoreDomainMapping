@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Code Navigation
+
+Always use codegraph tools for exploration. Never use Bash `find`/`grep`/`cat` — codegraph indexes the workspace and is faster and cheaper.
+
+| Tool | When to use |
+|------|-------------|
+| `codegraph_explore` | **Primary — use first.** Natural language or symbol/file names → verbatim source grouped by file. "How does X work", architecture, "where is X", surveying an area, or before an edit to see blast radius. Usually the only call needed. |
+| `codegraph_node` | **Read a file** (pass `file` only) — replaces the Read tool; returns source + line numbers + dependents. Or **single named symbol** (pass `symbol`) — location, signature, source, caller/callee trail before editing it. |
+| `codegraph_search` | **Locate a symbol by name** → file:line only, no code. Use to check existence or find where to look before a `node`/`explore` call. |
+| `codegraph_callers` | **Who calls X?** Lists callers of a function/method/class. Use to understand blast radius before a breaking change. |
+
 ## Commands
 
 ```bash

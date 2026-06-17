@@ -21,6 +21,7 @@ obj/
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+*.user
 
 # AWS User-specific
 .idea/**/aws.xml

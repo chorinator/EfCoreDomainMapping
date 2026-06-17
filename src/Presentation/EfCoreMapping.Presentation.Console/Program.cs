@@ -14,7 +14,12 @@ var host = Host.CreateDefaultBuilder(args)
             throw new InvalidOperationException("Connection string is empty");
         
         services.AddDbContext<AppDbContext, PostgresAppDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        {
+            options.UseNpgsql(connectionString, 
+                npgsqlOptions => 
+                    npgsqlOptions.MigrationsAssembly(
+                        typeof(PostgresAppDbContext).Assembly.GetName().Name));
+        });
         services.AddTransient<App>();
     })
     .Build();

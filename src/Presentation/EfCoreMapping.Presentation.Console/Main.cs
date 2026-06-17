@@ -1,6 +1,7 @@
 using EfCoreMapping.Domain;
 using EfCoreMapping.Infrastructure.EfCore;
 using EfCoreMapping.Infrastructure.EfCore.Specifications;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreMapping.Presentation.Console;
 
@@ -8,6 +9,9 @@ public class App(AppDbContext db)
 {
     public Task RunAsync()
     {
+        if (db.Database.GetPendingMigrations().Any())
+            db.Database.Migrate();
+
         InsertTransfersDemo.InsertTransfers(db);
 
         System.Console.WriteLine("--- USD transfers ---");
