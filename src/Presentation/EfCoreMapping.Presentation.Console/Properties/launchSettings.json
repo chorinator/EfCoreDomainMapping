@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EfCoreMapping.Presentation.Console": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

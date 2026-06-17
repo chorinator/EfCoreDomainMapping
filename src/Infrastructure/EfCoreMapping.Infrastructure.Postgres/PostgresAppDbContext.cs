@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreMapping.Infrastructure.Postgres;
 
-public class PostgresAppDbContext(DbContextOptions<AppDbContext> options) : AppDbContext(options)
+public class PostgresAppDbContext(DbContextOptions<PostgresAppDbContext> options) : AppDbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

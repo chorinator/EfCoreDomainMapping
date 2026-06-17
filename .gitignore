@@ -93,4 +93,7 @@ fabric.properties
 # codegraph
 .codegraph
 
+# Local environment
+appsettings.*.json
+
 # End of https://www.toptal.com/developers/gitignore/api/rider,dotnetcore

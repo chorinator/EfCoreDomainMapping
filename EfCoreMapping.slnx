@@ -7,6 +7,9 @@
     <Project Path="src\Infrastructure\EfCoreMapping.Infrastructure.Postgres\EfCoreMapping.Infrastructure.Postgres.csproj" />
   </Folder>
   <Folder Name="/src/Presentation/">
-    <Project Path="src\EfCoreMapping.Presentation.Console\EfCoreMapping.Presentation.Console.csproj" />
+    <Project Path="src\Presentation\EfCoreMapping.Presentation.Console\EfCoreMapping.Presentation.Console.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/EfCoreMapping.Infrastructure.Postgres.Tests/EfCoreMapping.Infrastructure.Postgres.Tests.csproj" />
   </Folder>
 </Solution>

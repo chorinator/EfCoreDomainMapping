@@ -30,4 +30,13 @@ public static class QueryTransfersDemo
         
         return transfers;
     }
+
+    public static IEnumerable<Transfer> QueryByTime(AppDbContext db, Timestamp from)
+    {
+        var transfers = db.Transfers
+            .Where(transfer => transfer.ExecutedAt >= from)
+            .ToList();
+        
+        return transfers;
+    }
 }

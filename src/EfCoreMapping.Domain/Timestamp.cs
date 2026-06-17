@@ -11,7 +11,7 @@ public record Timestamp(DateTime Value)
         new (DateTime.UtcNow);
 
     public Timestamp Add(TimeSpan timeSpan) =>
-        new Timestamp(Value.Add(timeSpan));
+        new (Value.Add(timeSpan));
     
     public static bool operator >(Timestamp left, Timestamp right) => left.Value > right.Value;
     public static bool operator >=(Timestamp left, Timestamp right) => left.Value >= right.Value;
