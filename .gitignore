@@ -97,4 +97,7 @@ fabric.properties
 # Local environment
 appsettings.*.json
 
+# Agents and Skills
+.agent-native/
+
 # End of https://www.toptal.com/developers/gitignore/api/rider,dotnetcore
