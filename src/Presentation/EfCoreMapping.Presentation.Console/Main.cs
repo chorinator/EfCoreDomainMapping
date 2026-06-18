@@ -1,6 +1,5 @@
 using EfCoreMapping.Domain;
-using EfCoreMapping.Domain.Specifications;
-using EfCoreMapping.Domain.Specifications.Transfers;
+using EfCoreMapping.Domain.Queries.Transfers;
 using EfCoreMapping.Infrastructure.EfCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,27 +12,25 @@ public class App(AppDbContext db)
         if (db.Database.GetPendingMigrations().Any())
             db.Database.Migrate();
 
-        if(!db.Transfers.Any())
+        if (!db.Transfers.Any())
             InsertTransfersDemo.InsertTransfers(db);
 
         var timestamp = Timestamp.UtcNow.Add(TimeSpan.FromHours(3));
-        List<Tuple<string, Specification<Transfer>>> specifications =
+        List<(string Title, Func<IQueryable<Transfer>, IQueryable<Transfer>> Apply)> queries =
         [
-            new ("USD transfers", new ByCurrency(Currency.USD)),
-            new ("Currency Starting With 'J'", new ByCurrencyStartingWith("J")),
-            new ("Transfers with amount >= 100", new ByMinAmount(100m)),
-            new ($"Transfers executed since {timestamp}", new AfterTimestamp(timestamp))
+            ("USD transfers",              q => q.ByCurrency(Currency.USD)),
+            ("Currency starting with 'J'", q => q.ByCurrencyStartingWith("J")),
+            ("Amount >= 100",              q => q.ByMinAmount(100m)),
+            ($"Since {timestamp}",         q => q.AfterTimestamp(timestamp))
         ];
 
-        foreach (var (title, specification) in specifications)
+        foreach (var (title, apply) in queries)
         {
             System.Console.WriteLine($"--- {title} ---");
-            var results = 
-                db.Transfers.WithSpecification(specification).ToList();
-            foreach (var transfer in results)
-                System.Console.WriteLine($"  {transfer}");
+            foreach (var t in apply(db.Transfers).ToList())
+                System.Console.WriteLine($"  {t}");
         }
-        
+
         return Task.CompletedTask;
     }
 }
