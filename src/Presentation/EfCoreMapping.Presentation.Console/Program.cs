@@ -1,8 +1,6 @@
-using EfCoreMapping.Infrastructure.EfCore;
 using EfCoreMapping.Infrastructure.MsSql;
 using EfCoreMapping.Infrastructure.Postgres;
 using EfCoreMapping.Presentation.Console;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,23 +18,11 @@ var host = Host.CreateDefaultBuilder(args)
         
         // Postgres
         if (string.Equals(dbProviderSelector, "Postgres", StringComparison.OrdinalIgnoreCase))
-            services.AddDbContext<AppDbContext, PostgresAppDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString,
-                    npgsqlOptions =>
-                        npgsqlOptions.MigrationsAssembly(
-                            typeof(PostgresAppDbContext).Assembly.GetName().Name));
-            });
+            services.AddPostgresSupport(connectionString);
         
         // MsSql
         if (string.Equals(dbProviderSelector, "SqlServer", StringComparison.OrdinalIgnoreCase))
-            services.AddDbContext<AppDbContext, MsSqlAppDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString,
-                    npgsqlOptions =>
-                        npgsqlOptions.MigrationsAssembly(
-                            typeof(MsSqlAppDbContext).Assembly.GetName().Name));
-            });
+            services.AddSqlServerSupport(connectionString);
         
         services.AddTransient<App>();
     })

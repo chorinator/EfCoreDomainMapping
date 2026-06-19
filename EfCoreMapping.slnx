@@ -11,6 +11,7 @@
     <Project Path="src\Presentation\EfCoreMapping.Presentation.Console\EfCoreMapping.Presentation.Console.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/EfCoreMapping.Infrastructure.Postgres.Tests/EfCoreMapping.Infrastructure.Postgres.Tests.csproj" />
+    <Project Path="tests/EfCoreMapping.Infrastructure.MsSql.Tests/EfCoreMapping.Infrastructure.MsSql.Tests.csproj" />
+    <Project Path="tests\EfCoreMapping.Infrastructure.EfCore.Tests\EfCoreMapping.Infrastructure.EfCore.Tests.csproj" />
   </Folder>
 </Solution>
