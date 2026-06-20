@@ -1,42 +1,42 @@
-﻿using EfCoreMapping.Infrastructure.EfCore;
+using EfCoreMapping.Infrastructure.EfCore;
 using EfCoreMapping.Infrastructure.EfCore.Tests;
 using Microsoft.EntityFrameworkCore;
 using Testcontainers.MsSql;
 
 namespace EfCoreMapping.Infrastructure.MsSql.Tests;
 
-public class TransferQueryTests : TransferQueriesTestBase
+public class TransferQueryTests(MsSqlDatabaseFixture fixture)
+    : TransferQueriesTestBase, IClassFixture<MsSqlDatabaseFixture>
 {
     private MsSqlContainer? _container;
-
-    protected override async Task<AppDbContext> CreateDbContext(CancellationToken ct)
+    private MsSqlAppDbContext? _dbContext;
+    
+    public override async ValueTask InitializeAsync()
     {
-        _container = 
-            new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04")
-            .Build();
-
-        await _container.StartAsync(ct);
-
-        var connectionString = _container.GetConnectionString();
-        var options = new DbContextOptionsBuilder<MsSqlAppDbContext>()
-            .UseSqlServer(connectionString,
-                mssqlOptions =>
-                    mssqlOptions.MigrationsAssembly(
-                        typeof(MsSqlAppDbContext).Assembly.GetName().Name))
-            .Options;
+        _container = await fixture.GetContainer();
         
-        DbContext = new MsSqlAppDbContext(options);
-        
-        await DbContext.Database.MigrateAsync(ct);
-        
-        return DbContext;
+        await base.InitializeAsync();
     }
 
-    public override async ValueTask DisposeAsync()
+    protected override AppDbContext GetDbContext()
+        => CreateDbContext(_container!);
+
+    protected override Task ResetState(CancellationToken ct)
+        => GetDbContext().Transfers.ExecuteDeleteAsync(ct);
+    
+    private MsSqlAppDbContext CreateDbContext(MsSqlContainer container)
     {
-        await base.DisposeAsync();
+        if(_dbContext is not null)
+            return _dbContext;
         
-        if(_container is not null)
-            await _container.DisposeAsync();
+        var options = new DbContextOptionsBuilder<MsSqlAppDbContext>()
+            .UseSqlServer(container.GetConnectionString(),
+                o => o.MigrationsAssembly(typeof(MsSqlAppDbContext).Assembly.GetName().Name))
+            .Options;
+
+        _dbContext = new MsSqlAppDbContext(options);
+        _dbContext.Database.Migrate();
+
+        return _dbContext;
     }
 }

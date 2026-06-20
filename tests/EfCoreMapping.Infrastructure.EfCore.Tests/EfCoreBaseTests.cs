@@ -1,24 +1,22 @@
-﻿using System.Diagnostics;
-
-namespace EfCoreMapping.Infrastructure.EfCore.Tests;
+﻿namespace EfCoreMapping.Infrastructure.EfCore.Tests;
 
 public abstract class EfCoreBaseTests : IAsyncLifetime
 {
-    protected abstract Task<AppDbContext> CreateDbContext(CancellationToken ct);
-
     private readonly List<CancellationTokenSource> _dispatchedCancellationTokenSources = [];
     protected CancellationToken GetCancellationToken()
     {
-        var cts = Debugger.IsAttached
-            ? new CancellationTokenSource(TimeSpan.FromHours(1))
-            : new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var cts = Helper.GetCancellationTokenSource();
         _dispatchedCancellationTokenSources.Add(cts);
         
         return cts.Token;
     }
-    
-    protected AppDbContext? DbContext;
 
+    #region DbContext
+    
+    protected abstract Task ResetState(CancellationToken ct);
+    protected abstract AppDbContext GetDbContext();
+    
+    #endregion
     public virtual async ValueTask DisposeAsync()
     {
         foreach (var cts in _dispatchedCancellationTokenSources)
@@ -27,12 +25,11 @@ public abstract class EfCoreBaseTests : IAsyncLifetime
             cts.Dispose();
         }
         
-        if(DbContext is not null)
-            await DbContext.DisposeAsync();
+        GC.SuppressFinalize(this);
     }
 
     public virtual async ValueTask InitializeAsync()
     {
-        DbContext = await CreateDbContext(GetCancellationToken());
+        await ResetState(GetCancellationToken());
     }
 }

@@ -11,10 +11,12 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
     private static Transfer MakeTransfer(Currency currency, decimal amount, Timestamp? executedAt = null)
         => new(TransferId.NewId(), new Money(amount, currency), executedAt ?? BaseTime);
 
+    private AppDbContext DbContext => GetDbContext();
+
     private async Task Seed(params Transfer[] transfers)
     {
-        await DbContext!.Transfers.AddRangeAsync(transfers);
-        await DbContext!.SaveChangesAsync();
+        await DbContext.Transfers.AddRangeAsync(transfers);
+        await DbContext.SaveChangesAsync();
     }
 
     // ByCurrency
@@ -29,7 +31,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByCurrency(Currency.USD)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -46,7 +48,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByCurrency(Currency.USD)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -62,7 +64,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByCurrency(Currency.USD)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -82,7 +84,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByCurrencyStartingWith("J")
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -99,7 +101,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByCurrencyStartingWith("X")
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -118,7 +120,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByCurrencyStartingWith("XA")
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -139,7 +141,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByMinAmount(100m)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -157,7 +159,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByMinAmount(100m)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -173,7 +175,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .ByMinAmount(100m)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -194,7 +196,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .AfterTimestamp(BaseTime)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -212,7 +214,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .AfterTimestamp(BaseTime)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
@@ -229,7 +231,7 @@ public abstract class TransferQueriesTestBase : EfCoreBaseTests
 
         // Act
         var result =
-            await DbContext!.Transfers
+            await DbContext.Transfers
                 .AfterTimestamp(BaseTime)
                 .ToListAsync(cancellationToken: GetCancellationToken());
 
