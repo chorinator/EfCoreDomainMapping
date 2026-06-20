@@ -8,35 +8,33 @@ namespace EfCoreMapping.Infrastructure.MsSql.Tests;
 public class TransferQueryTests(MsSqlDatabaseFixture fixture)
     : TransferQueriesTestBase, IClassFixture<MsSqlDatabaseFixture>
 {
-    private MsSqlContainer? _container;
-    private MsSqlAppDbContext? _dbContext;
-    
+    private MsSqlAppDbContext _dbContext = null!;
+
     public override async ValueTask InitializeAsync()
     {
-        _container = await fixture.GetContainer();
-        
+        _dbContext = CreateDbContext(fixture.GetContainer());
+        await _dbContext.Database.MigrateAsync();
         await base.InitializeAsync();
     }
 
-    protected override AppDbContext GetDbContext()
-        => CreateDbContext(_container!);
+    protected override AppDbContext GetDbContext() => _dbContext;
 
     protected override Task ResetState(CancellationToken ct)
-        => GetDbContext().Transfers.ExecuteDeleteAsync(ct);
-    
-    private MsSqlAppDbContext CreateDbContext(MsSqlContainer container)
+        => _dbContext.Transfers.ExecuteDeleteAsync(ct);
+
+    private static MsSqlAppDbContext CreateDbContext(MsSqlContainer container)
     {
-        if(_dbContext is not null)
-            return _dbContext;
-        
         var options = new DbContextOptionsBuilder<MsSqlAppDbContext>()
             .UseSqlServer(container.GetConnectionString(),
                 o => o.MigrationsAssembly(typeof(MsSqlAppDbContext).Assembly.GetName().Name))
             .Options;
 
-        _dbContext = new MsSqlAppDbContext(options);
-        _dbContext.Database.Migrate();
-
-        return _dbContext;
+        return new MsSqlAppDbContext(options);
+    }
+    
+    public override async ValueTask DisposeAsync()
+    {
+        await _dbContext.DisposeAsync();
+        await base.DisposeAsync();
     }
 }
